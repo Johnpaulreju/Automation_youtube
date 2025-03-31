@@ -51,7 +51,7 @@ export default function App() {
     const newEntry = { url, date: selectedDate.toISOString().split('T')[0], time: selectedTime };
     
     try {
-      const response = await fetch('http://192.168.0.104:8000/schedule', {
+      const response = await fetch('http://192.168.1.118:8000/schedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -83,7 +83,7 @@ export default function App() {
     setLoading(true);
     
     try {
-      const response = await fetch('http://192.168.0.104:8000/delete', {
+      const response = await fetch('http://192.168.1.118:8000/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ video_id }),
@@ -109,6 +109,35 @@ export default function App() {
     await AsyncStorage.removeItem("uploadQueue");
   };
 
+  const uploadNow = async () => {
+    if (!url) {
+      Alert.alert('Error', 'Please enter a YouTube URL');
+      return;
+    }
+    setLoading(true);
+    
+    try {
+      const response = await fetch('http://192.168.1.118:8000/upload_now', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        Alert.alert('Success', 'Video uploaded successfully.');
+        setUrl('');
+      } else {
+        Alert.alert('Error', data.error || 'An error occurred');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to upload video');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Calculate filtered time slots
   const currentTime = new Date();
   const isToday = selectedDate.toDateString() === currentTime.toDateString();
@@ -131,6 +160,8 @@ export default function App() {
         
         <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>YouTube Video Scheduler</Text>
         <TextInput placeholder="Paste YouTube URL" value={url} onChangeText={setUrl} style={{ borderWidth: 1, padding: 10, marginBottom: 10 }} />
+        <Button mode="contained" onPress={uploadNow} style={{ marginTop: 10, backgroundColor: 'green' }}>Upload Now</Button>
+        <Text style={{ marginTop: 10 , marginBottom:10 }}>Schedule Your Video :  </Text>
 
         <Button mode="contained" onPress={() => setShowPicker(true)}>Select Date</Button>
         {showPicker && (

@@ -61,3 +61,80 @@ This project automates the process of downloading a YouTube video and re-uploadi
   5. Use this token for subsequent Docker runs.
 
 Now you're ready to automate YouTube uploads! 🎬🚀
+
+---
+
+## 📱 Building APK for Android
+
+Since your app is built with **Expo**, you can generate an APK for free using **EAS Build (Expo Application Services)**. Here's how:
+
+### 📌 **Step 1: Install Expo CLI and EAS CLI (If Not Installed)**
+
+Run the following command in your terminal:
+
+```sh
+npm install -g expo-cli eas-cli
+```
+
+---
+
+### 📌 **Step 2: Log in to Expo**
+
+```sh
+eas login
+```
+
+(If you don’t have an Expo account, create one at [expo.dev](https://expo.dev))
+
+---
+
+### 📌 **Step 3: Initialize EAS in Your Project**
+
+In your project folder, run:
+
+```sh
+eas init
+```
+
+It will create an `eas.json` file.
+
+---
+
+### 📌 **Step 4: Build the APK**
+
+Run the following command:
+
+```sh
+eas build -p android --profile preview
+```
+
+This will generate an **APK** that can be installed on Android devices.
+
+🚨 **Important:**
+
+- If your project uses **managed workflow**, Expo will handle everything.
+- If your project uses **bare workflow**, make sure you have `android` set up properly.
+
+---
+
+### 📌 **Step 5: Download the APK**
+
+Once the build is complete, Expo will provide a **download link** in the terminal.
+
+OR, to list your builds:
+
+```sh
+eas build:list
+```
+
+---
+
+### 📌 **Step 6: Install the APK on Your Android Device**
+
+1. Download the APK from the link.
+2. Transfer it to your phone.
+3. Install and test your app! 🎉
+
+---
+
+Let me know if you hit any issues! 🚀

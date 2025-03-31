@@ -84,6 +84,19 @@ def upload_video(filename, title, description="", tags=None, category_id="22",
     return video_id
 
 
+@app.route('/upload_now', methods=['POST'])
+def upload_now():
+    data = request.json
+    url = data.get("url")
+
+    if not url:
+        return jsonify({"error": "URL is required"}), 400
+
+    filename, title = download_video(url)
+    video_id = upload_video(filename, title)
+
+    return jsonify({"message": "Upload completed", "video_id": video_id})
+
 @app.route('/schedule', methods=['POST'])
 def schedule_upload():
     data = request.json
